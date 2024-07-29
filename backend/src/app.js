@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import initializeDatabase from "./routes/initializeDatabase.js";
 
 const app = express();
 
@@ -13,5 +14,7 @@ app.use(
 app.use(express.json({ limit: "21kb" }));
 app.use(express.urlencoded({ extended: true, limit: "21kb" }));
 app.use(express.static("public"));
+
+app.use("/api", initializeDatabase);
 
 export { app };
