@@ -3,25 +3,28 @@ import Transaction from "../models/Transaction.model.js";
 
 const router = express.Router();
 
-router.get("/bar-chart", async (req, res) => {
+// List bar chart data based on month
+router.post("/bar-chart", async (req, res) => {
   try {
-    const { month } = req.query;
-    const monthQuery = month
-      ? {
-          dateOfSale: {
-            $gte: new Date(
-              new Date().setMonth(new Date(month + " 1, 2000").getMonth(), 1)
-            ),
-            $lt: new Date(
-              new Date().setMonth(
-                new Date(month + " 1, 2000").getMonth() + 1,
-                1
-              )
-            ),
-          },
-        }
-      : {};
+    const { year, month } = req.body; // Extract year and month from the request body
 
+    // Validate the input
+    if (!year || !month) {
+      return res.status(400).json({ message: "Year and month are required" });
+    }
+
+    // Calculate start and end dates for the specified month and year
+    const startDate = new Date(Date.UTC(year, month - 1, 1)); // month is 0-indexed
+    const endDate = new Date(Date.UTC(year, month, 1)); // Start of the next month
+
+    const monthQuery = {
+      dateOfSale: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    };
+
+    // Define price ranges
     const priceRanges = [
       { range: "0-100", min: 0, max: 100 },
       { range: "101-200", min: 101, max: 200 },
@@ -35,6 +38,7 @@ router.get("/bar-chart", async (req, res) => {
       { range: "901-above", min: 901, max: Infinity },
     ];
 
+    // Fetch data for the bar chart
     const barChartData = await Promise.all(
       priceRanges.map(async ({ range, min, max }) => {
         const count = await Transaction.countDocuments({
@@ -47,6 +51,7 @@ router.get("/bar-chart", async (req, res) => {
 
     res.status(200).json(barChartData);
   } catch (error) {
+    console.error("Error fetching bar chart data:", error);
     res.status(500).send("Error fetching bar chart data");
   }
 });

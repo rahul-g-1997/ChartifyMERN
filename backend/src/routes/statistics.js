@@ -3,38 +3,59 @@ import Transaction from "../models/Transaction.model.js";
 
 const router = express.Router();
 
-router.get("/statistics", async (req, res) => {
-  try {
-    const { month } = req.query;
-    const monthQuery = month
-      ? {
-          dateOfSale: {
-            $gte: new Date(
-              new Date().setMonth(new Date(month + " 1, 2000").getMonth(), 1)
-            ),
-            $lt: new Date(
-              new Date().setMonth(
-                new Date(month + " 1, 2000").getMonth() + 1,
-                1
-              )
-            ),
-          },
-        }
-      : {};
+router.use(express.json()); // Middleware to parse JSON bodies
 
+router.post("/statistics", async (req, res) => {
+  try {
+    const { year, month } = req.body; // Year and month in yyyy-mm format
+
+    if (!year || !month) {
+      return res.status(400).json({ message: "Year and month are required" });
+    }
+
+    // Convert yyyy-mm to Date objects
+    const parseYearMonth = (year, month) => {
+      const startDate = new Date(Date.UTC(year, month - 1, 1)); // month is 0-indexed
+      const endDate = new Date(Date.UTC(year, month, 1)); // Start of the next month
+      return { startDate, endDate };
+    };
+
+    const { startDate, endDate } = parseYearMonth(Number(year), Number(month));
+
+    console.log("Start Date:", startDate.toISOString()); // Debugging
+    console.log("End Date:", endDate.toISOString()); // Debugging
+
+    const monthQuery = {
+      dateOfSale: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    };
+
+    console.log("Month Query:", monthQuery); // Debugging
+
+    // Aggregate total sale amount
     const totalSaleAmount = await Transaction.aggregate([
       { $match: monthQuery },
       { $group: { _id: null, total: { $sum: "$price" } } },
     ]);
 
+    console.log("Total Sale Amount:", totalSaleAmount); // Debugging
+
+    // Count sold items
     const soldItemsCount = await Transaction.countDocuments({
       ...monthQuery,
       sold: true,
     });
+
+    // Count not sold items
     const notSoldItemsCount = await Transaction.countDocuments({
       ...monthQuery,
       sold: false,
     });
+
+    console.log("Sold Items Count:", soldItemsCount); // Debugging
+    console.log("Not Sold Items Count:", notSoldItemsCount); // Debugging
 
     res.status(200).json({
       totalSaleAmount: totalSaleAmount[0]?.total || 0,
@@ -42,6 +63,7 @@ router.get("/statistics", async (req, res) => {
       totalNotSoldItems: notSoldItemsCount,
     });
   } catch (error) {
+    console.error("Error fetching statistics:", error);
     res.status(500).send("Error fetching statistics");
   }
 });
