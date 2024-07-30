@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import initializeDatabase from "./routes/initializeDatabase.js";
 import transactions from "./routes/transactions.js"
+import statistics from "./routes/statistics.js"
 
 const app = express();
 
@@ -18,6 +19,10 @@ app.use(express.static("public"));
 
 app.use("/api", initializeDatabase);
 app.use("/api", transactions);
+app.use("/api", statistics);
+// app.use("/api", barChart);
+// app.use("/api", pieChart);
+// app.use("/api", combinedData);
 
 
 export { app };
