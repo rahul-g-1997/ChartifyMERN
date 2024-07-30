@@ -14,7 +14,6 @@ router.post("/combined-data", async (req, res) => {
     }
 
     const requestBody = { year, month };
-    console.log(requestBody);
 
     // Fetch data from the various endpoints
     const [statisticsResponse, barChartResponse, pieChartResponse] =

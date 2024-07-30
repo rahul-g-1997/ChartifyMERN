@@ -22,9 +22,6 @@ router.post("/statistics", async (req, res) => {
 
     const { startDate, endDate } = parseYearMonth(Number(year), Number(month));
 
-    console.log("Start Date:", startDate.toISOString()); // Debugging
-    console.log("End Date:", endDate.toISOString()); // Debugging
-
     const monthQuery = {
       dateOfSale: {
         $gte: startDate,
@@ -32,15 +29,12 @@ router.post("/statistics", async (req, res) => {
       },
     };
 
-    console.log("Month Query:", monthQuery); // Debugging
-
     // Aggregate total sale amount
     const totalSaleAmount = await Transaction.aggregate([
       { $match: monthQuery },
       { $group: { _id: null, total: { $sum: "$price" } } },
     ]);
 
-    console.log("Total Sale Amount:", totalSaleAmount); // Debugging
 
     // Count sold items
     const soldItemsCount = await Transaction.countDocuments({
@@ -53,9 +47,6 @@ router.post("/statistics", async (req, res) => {
       ...monthQuery,
       sold: false,
     });
-
-    console.log("Sold Items Count:", soldItemsCount); // Debugging
-    console.log("Not Sold Items Count:", notSoldItemsCount); // Debugging
 
     res.status(200).json({
       totalSaleAmount: totalSaleAmount[0]?.total || 0,

@@ -22,8 +22,6 @@ router.post("/transactions", async (req, res) => {
       ].filter(Boolean), // Removes null entries
     };
 
-    console.log("Filter:", filter); // Log the filter to check correctness
-
     // Find transactions with pagination and search filter
     const transactions = await Transaction.find(filter)
       .skip((page - 1) * perPage)
