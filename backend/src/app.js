@@ -4,6 +4,8 @@ import initializeDatabase from "./routes/initializeDatabase.js";
 import transactions from "./routes/transactions.js";
 import statistics from "./routes/statistics.js";
 import barChart from "./routes/barChart.js";
+import pieChart from "./routes/pieChart.js";
+import combinedData from "./routes/combinedData.js";
 
 const app = express();
 
@@ -22,7 +24,7 @@ app.use("/api", initializeDatabase);
 app.use("/api", transactions);
 app.use("/api", statistics);
 app.use("/api", barChart);
-// app.use("/api", pieChart);
-// app.use("/api", combinedData);
+app.use("/api", pieChart);
+app.use("/api", combinedData);
 
 export { app };
