@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "69ee3a01-539b-4107-aca4-ce44c0fe4c7d",
+		"name": "ChartifyMERN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29034027"
+	},
+	"item": [
+		{
+			"name": "Data Source",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://s3.amazonaws.com/roxiler.com/product_transaction.json",
+					"protocol": "https",
+					"host": [
+						"s3",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"roxiler.com",
+						"product_transaction.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initialize Database",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/initialize-database",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"initialize-database"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"search\":\"329.85\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Statistics",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"year\": 2022,\r\n  \"month\": 7\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/statistics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bar Chart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"year\": 2022,\r\n  \"month\": 7\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/bar-chart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bar-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pie Chart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"year\": 2022,\r\n  \"month\": 7\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/pie-chart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"pie-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Combined Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"year\": 2022,\r\n  \"month\": 7\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/combined-data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"combined-data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
