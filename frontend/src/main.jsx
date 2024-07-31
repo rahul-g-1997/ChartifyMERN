@@ -1,10 +1,12 @@
 // Import necessary dependencies
 import * as React from "react";
+import "./index.css";
+
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./rtk/store";
 import App from "./App";
-import { Error, Home } from "./pages";
+import { Error } from "./pages";
 import {
   createRoutesFromElements,
   createBrowserRouter,
@@ -19,9 +21,7 @@ const root = createRoot(rootElement);
 // Create browser router and routes
 const route = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />} errorElement={<Error />}>
-      <Route index element={<Home />} />
-    </Route>
+    <Route path="/" element={<App />} errorElement={<Error />}></Route>
   )
 );
 
